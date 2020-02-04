@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from database_setup import Restaurant, MenuItem, engine
 from sqlalchemy.orm import sessionmaker
 
@@ -61,6 +61,21 @@ def delete_menu_item(restaurant_name, item_name):
         return redirect(url_for('menu', restaurant_name=restaurant.name))
     else:
         return render_template('delete_menu_item.html', restaurant_name=restaurant_name, item_name=item_name)
+
+
+# Making an API Endpoint (GET Request)
+@app.route('/restaurants/<string:restaurant_name>/menu/json')
+def restaurant_menu_json(restaurant_name):
+    restaurant = session.query(Restaurant).filter_by(name=restaurant_name).one()
+    menu_items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id).all()
+    return jsonify(MenuItems=[item.serialize for item in menu_items])
+
+
+@app.route('/restaurants/<string:restaurant_name>/menu/<string:item_name>/json')
+def menu_item_json(restaurant_name, item_name):
+    restaurant = session.query(Restaurant).filter_by(name=restaurant_name).one()
+    item = session.query(MenuItem).filter_by(name=item_name, restaurant_id=restaurant.id).first()
+    return jsonify(MenuItems=[item.serialize])
 
 
 if __name__ == '__main__':

@@ -6,10 +6,12 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
 class Restaurant(Base):
   __tablename__ = 'restaurant'
   name = Column(String(80), nullable=False)
   id = Column(Integer, primary_key=True)
+
 
 class MenuItem(Base):
   __tablename__ = 'menu_item'
@@ -20,6 +22,17 @@ class MenuItem(Base):
   price = Column(String(8))
   restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
   restaurant = relationship(Restaurant)
+
+  @property
+  def serialize(self):
+    # Returns object in easily serializable format
+    return {
+      'id': self.id,
+      'name': self.name,
+      'course': self.course,
+      'description': self.description,
+      'price': self.price
+    }
 
 
 ### Insert at the end of the file ###
