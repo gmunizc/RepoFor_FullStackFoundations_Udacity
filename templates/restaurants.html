@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Restaurants</title>
+    </head>
+    <body>
+
+        <h1>Restaurants</h1>
+
+        {% for restaurant in restaurants %}
+
+        <div>
+            <!--
+            <h2><a href='/restaurants/{{restaurant.id}}/menu'>{{restaurant.name}}</a></h2>
+            <p><a href='/restaurants/{{restaurant.id}}/new_item'>Add New Menu Item</a></p>
+            -->
+            <h2><a href={{url_for('menu', restaurant_name=restaurant.name)}}>{{restaurant.name}}</a></h2>
+
+        </div>
+        <br>
+
+        {% endfor %}
+
+    </body>
+</html>
+
+<!--
+output = ""
+    output += "<html><body>"
+    for restaurant in restaurants:
+        output += "<div>"
+        output += f"<h2><a href='/restaurants/{restaurant.id}/menu'>{restaurant.name}</a></h2>"
+        output += f"<h4><a href='/restaurants/{restaurant.id}/new_item'>Add New Menu Item</a></h4>"
+        output += "</div>"
+        output += "</br>"
+
+    output += "</html></body>"
+
+    return output
+-->
